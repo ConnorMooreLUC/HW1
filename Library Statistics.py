@@ -1,4 +1,6 @@
 import csv
+import matplotlib.pyplot as plt
+
 
 library13={}
 library14={}
@@ -37,10 +39,14 @@ for row in csv_g:
 
 g.close()
 
+def percentChange(str1, str2):
+    change = (int(str1)-int(str2))*(100/int(str1))
+    return change
+
 for index in range(len(liblist13)):
     print(namelist[index], "2013: ",
-          liblist13[index],"2014: ",liblist14[index],"  % change: "
-          ,100*(int(liblist14[index]) - int(liblist13[index]))/int(liblist13[index]))
+          liblist13[index],"2014: ",liblist14[index],"  % change: ",
+          percentChange(liblist13[index],liblist14[index]))
 
 #print(library13.items(),"\n\n\n")
 #print(library14.items())
