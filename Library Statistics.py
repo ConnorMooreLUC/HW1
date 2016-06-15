@@ -1,5 +1,5 @@
 import csv
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 library13={} #2013 library dictionary
@@ -41,15 +41,21 @@ for row in csv_g:
 g.close()
 
 def percentChange(str1, str2):
-    change = (int(str1)-int(str2))*(100/int(str1))
+    change = (int(str2)-int(str1))*(100/int(str1))
     return change
-    
-    
+
+
+testlist = []
 for index in range(len(liblist13)):
     x = percentChange(liblist13[index],liblist14[index])
-    perdifDict[namelist[index]]= x
+    testlist.append(x)
+    perdifDict[namelist[index]]= float(x)
     print(namelist[index], "2013: ",
           liblist13[index],"2014: ",liblist14[index],"  % change: ",
           x)
 
-#print(perdifDict)
+del perdifDict['Albany Park  ']  # remove outlier
+
+plt.bar(range(len(perdifDict)),  perdifDict.values())
+plt.xticks(range(len(perdifDict)), perdifDict.keys(),rotation = 45)
+plt.show()
