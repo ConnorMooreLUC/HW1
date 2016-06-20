@@ -5,6 +5,8 @@ Pulls the location name and yearly totals for analysis and returns it in a dicti
 @author: Connor Moore
 """
 import csv
+import re
+
 returnList = []
 
 def csvScope(filename, mod):
@@ -17,11 +19,15 @@ def csvScope(filename, mod):
 
   csv_f = csv.DictReader(f)
   for row in csv_f:
+      orary = ''
       temp= {}
       #will contain both the name and yearly totals.
       #print(row['LOCATION'],row['YTD'])
-      temp[row['LOCATION']] = int(row['YTD'])
+      orary = re.sub(r'(\*)','',row['LOCATION'])
+      #print(orary)
+      #print(isinstance(orary, str))
+      temp = dict({orary :  int(row['YTD'])})
       returnList.append(temp)
-    
+      
   f.close()
   return returnList
