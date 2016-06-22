@@ -41,13 +41,15 @@ def csvScope(filename, nameString='LOCATION', monthString='YTD',returnList = [])
     return returnList
     
     
-listL =[lista, listb, listc, listd]
-def listMod(list1,list2):
-    temp = []
-    for i  in range(len(list1)):
-        for k, v in list1[i].items():
-            for j in range(len(listL)-1):
-                m = list(listl[i].values())
-                print(k,v,m)
-        
-listMod([{'Sample': 1}],[{'Sample2':1}])
+def listMod(listL):
+    for i  in range(len(listL)-1):
+        for k, v in lista[i].items():
+            m = list(listb[i].values())
+            print(k,v[0],m[0][0])
+            lista[i][k] = v[0]-m[0][0]
+            print(lista)
+                
+lista = [{'Sam':[1]}]
+listb = [{'Ple':[-1]}] 
+listL =[lista, listb]      
+listMod(listL)
