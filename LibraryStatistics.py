@@ -10,11 +10,14 @@ liblist14=[] #2014 total yearly visitors library list
 perdifDict = {} # % differences dictionary
 
 
-liblist13 = csvScope('Libraries_-_2013_Circulation_by_Location.csv',0)
-#print(liblist13)
-
-
-
+liblista = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','April')
+print(liblista)
+liblistb = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','')
+print(liblistb)
+liblistc = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Rogers Park','June')
+print(liblistc)
+liblistd = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Altgeld','June')
+print(liblistd)
 
 
 def percentChange(str1, str2):
