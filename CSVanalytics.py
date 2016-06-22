@@ -7,8 +7,8 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 import csv
 import re
 
-def csvScope(filename, nameString='LOCATION', monthString='YTD',returnList = []):
-
+def csvScope(filename, nameString='LOCATION', monthString='YTD'):
+    returnList = []
     if nameString == '':
             nameString = "LOCATION"
     if monthString == '':
@@ -22,7 +22,10 @@ def csvScope(filename, nameString='LOCATION', monthString='YTD',returnList = [])
         for row in csv_f:
             value = []
             temp= {}
-            value.append(int(row[monthString.upper()]))
+            if row[monthString.upper()].isdigit():
+                value.append(int(row[monthString.upper()]))
+            else:
+                value.append(0)
             temp = dict({row[nameString] : value})
             returnList.append(temp)     
     else:
@@ -30,6 +33,10 @@ def csvScope(filename, nameString='LOCATION', monthString='YTD',returnList = [])
             orary = ''
             value = []
             temp= {}
+            if row[monthString.upper()].isdigit():
+                value.append(int(row[monthString.upper()]))
+            else:
+                value.append(0)
             value.append(int(row[monthString.upper()]))
             #will contain both the name and yearly totals.
             orary = (regex.sub('',row['LOCATION'])).lower()
@@ -43,13 +50,13 @@ def csvScope(filename, nameString='LOCATION', monthString='YTD',returnList = [])
     
 def listMod(listL):
     for i  in range(len(listL)-1):
-        for k, v in lista[i].items():
-            m = list(listb[i].values())
+        for k, v in listL[i].items():
+            m = list(listL[i+1].values())
             print(k,v[0],m[0][0])
             lista[i][k] = v[0]-m[0][0]
             print(lista)
                 
-lista = [{'Sam':[1]}]
-listb = [{'Ple':[-1]}] 
-listL =[lista, listb]      
-listMod(listL)
+#lista = [{'Sam':[1]}]
+#listb = [{'Ple':[-1]}] 
+#listL =[lista, listb]      
+#listMod(listL)
