@@ -3,7 +3,9 @@ from CSVanalytics import csvScope
 import numpy as np
 import shapely
 
-
+liblist = ['Libraries_-_2011_Circulation_by_Location.csv','Libraries_-_2012_Circulation_by_Location.csv',
+           'Libraries_-_2013_Circulation_by_Location.csv', 'Libraries_-_2014_Circulation_by_Location.csv',
+           'Libraries_-__2015_Circulation_by_Location.csv']
 library13={} #2013 library dictionary
 library14={} #2014 library dictionary
 namelist=[]  #list of library names
@@ -12,17 +14,8 @@ liblist14=[] #2014 total yearly visitors library list
 perdifDict = {} # % differences dictionary
 
 
-liblista = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','MAY')
+liblista = csvScope(liblist[0])
 print(liblista)
-liblistb = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','May')
-print(liblistb)
-liblistc = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','')
-print(liblistc)
-liblistd = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Altgeld','June')
-print(liblistd)
-libliste = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','')
-print(libliste)
-
 
 
 def percentChange(str1, str2):
