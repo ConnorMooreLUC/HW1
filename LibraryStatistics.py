@@ -1,5 +1,7 @@
 #import matplotlib.pyplot as plt
 from CSVanalytics import csvScope
+import numpy as np
+import shapely
 
 
 library13={} #2013 library dictionary
