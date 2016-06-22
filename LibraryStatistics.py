@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from CSVanalytics import csvScope
 
 
@@ -10,14 +10,17 @@ liblist14=[] #2014 total yearly visitors library list
 perdifDict = {} # % differences dictionary
 
 
-liblista = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','April')
+liblista = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','MAY')
 print(liblista)
-liblistb = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','')
+liblistb = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','May')
 print(liblistb)
-liblistc = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Rogers Park','June')
+liblistc = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Edgewater','')
 print(liblistc)
 liblistd = csvScope('Libraries_-_2013_Circulation_by_Location.csv','Altgeld','June')
 print(liblistd)
+libliste = csvScope('Libraries_-_2013_Circulation_by_Location.csv','','')
+print(libliste)
+
 
 
 def percentChange(str1, str2):

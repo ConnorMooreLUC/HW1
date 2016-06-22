@@ -5,3 +5,6 @@ Created on Sat Jun 18 22:37:34 2016
 @author: Connor Moore
 """
 
+monthString = 'YTD'
+bool = monthString.upper()=="YTD"
+print(bool)

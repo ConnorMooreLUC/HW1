@@ -12,24 +12,29 @@ import re
 
 def csvScope(filename, nameString='LOCATION', monthString='YTD'):
     if nameString == '':
-        nameString = 'LOCATION'
-    elif monthString == '':
-        nameString = 'YTD'
+        nameString = "LOCATION"
+    if monthString == '':
+        monthString = "YTD"
     returnList = []
     f = open(filename)
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
     monthString = regex.sub('',monthString)
     csv_f = csv.DictReader(f)    
-    
-    for row in csv_f:
-        orary = ''
-        temp= {}
-        #will contain both the name and yearly totals.
-        orary = (regex.sub('',row['LOCATION'])).lower()
-        if orary == (nameString).lower():
-            temp = dict({nameString.upper() :  int(row[monthString.upper()])})
-            returnList.append(temp)
-      
+    if nameString == 'LOCATION':
+        for row in csv_f:
+            temp= {}
+            temp = dict({row[nameString] :  int(row[monthString.upper()])})
+            returnList.append(temp)     
+    else:
+        for row in csv_f:
+            orary = ''
+            temp= {}
+            #will contain both the name and yearly totals.
+            orary = (regex.sub('',row['LOCATION'])).lower()
+            if orary == (nameString).lower():
+                temp = dict({nameString.upper() :  int(row[monthString.upper()])})
+                returnList.append(temp)
+          
     f.close()
     return returnList
