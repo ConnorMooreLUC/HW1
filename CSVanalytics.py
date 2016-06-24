@@ -7,12 +7,15 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 import csv
 import re
 
-def csvScope(filename, nameString='LOCATION', monthString='YTD'):
-    returnList = []
+def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
+    print(filename)
     if nameString == '':
-            nameString = "LOCATION"
+        nameString = "LOCATION"
     if monthString == '':
-            monthString = "YTD"
+        monthString = "YTD"
+    numpat = re.compile('[^0-9]')
+    year = numpat.sub('',filename)
+    print(year)
     f = open(filename)
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
@@ -20,28 +23,28 @@ def csvScope(filename, nameString='LOCATION', monthString='YTD'):
     csv_f = csv.DictReader(f)    
     if nameString == 'LOCATION':
         for row in csv_f:
-            value = []
+            if row['ADDRESS'] == '':
+                row['ADDRESS']= 'no address found'
             temp= {}
             if row[monthString.upper()].isdigit():
-                value.append(int(row[monthString.upper()]))
+                temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: row[monthString.upper()]})
             else:
-                value.append(0)
-            temp = dict({row[nameString] : value})
+                temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: 0})
             returnList.append(temp)     
     else:
         for row in csv_f:
+            if row['ADDRESS'] == '':
+                row['ADDRESS']= 'no address found'
             orary = ''
-            value = []
+            value = 0
             temp= {}
             if row[monthString.upper()].isdigit():
-                value.append(int(row[monthString.upper()]))
-            else:
-                value.append(0)
-            value.append(int(row[monthString.upper()]))
+                value = (int(row[monthString.upper()]))
             #will contain both the name and yearly totals.
             orary = (regex.sub('',row['LOCATION'])).lower()
             if orary == (nameString).lower():
-                temp = dict({nameString.upper() : value})
+                temp = dict({nameString.upper() : row['ADDRESS'],
+                             monthString+', '+ year: row[monthString.upper()]})
                 returnList.append(temp)
           
         f.close()
