@@ -8,43 +8,45 @@ import csv
 import re
 
 def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
-    print(filename)
-    if nameString == '':
-        nameString = "LOCATION"
-    if monthString == '':
-        monthString = "YTD"
-    numpat = re.compile('[^0-9]')
-    year = numpat.sub('',filename)
-    print(year)
-    f = open(filename)
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
     monthString = regex.sub('',monthString)
-    csv_f = csv.DictReader(f)    
-    if nameString == 'LOCATION':
-        for row in csv_f:
-            if row['ADDRESS'] == '':
-                row['ADDRESS']= 'no address found'
-            temp= {}
-            if row[monthString.upper()].isdigit():
-                temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: row[monthString.upper()]})
-            else:
-                temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: 0})
-            returnList.append(temp)     
-    else:
-        for row in csv_f:
-            if row['ADDRESS'] == '':
-                row['ADDRESS']= 'no address found'
-            orary = ''
-            value = 0
-            temp= {}
-            if row[monthString.upper()].isdigit():
-                value = (int(row[monthString.upper()]))
-            #will contain both the name and yearly totals.
-            orary = (regex.sub('',row['LOCATION'])).lower()
-            if orary == (nameString).lower():
-                temp = dict({nameString.upper() : row['ADDRESS'],
-                             monthString+', '+ year: row[monthString.upper()]})
+    if nameString == '':
+        nameString = "LOCATION"
+    if monthString == '':
+       monthString = "YTD"
+    for i in range(len(filename)):
+        print(filename[i])
+        numpat = re.compile('[^0-9]')
+        year = numpat.sub('',filename[i])
+        print(year)
+        f = open(filename[i])
+        csv_f = csv.DictReader(f)    
+        if nameString == 'LOCATION':
+           for row in csv_f:
+                if row['ADDRESS'] == '':
+                    row['ADDRESS']= 'no address found'
+                temp= {}
+                value = row[monthString.upper()]
+                if  value.isdigit():
+                    temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: value})
+                else:
+                    temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: 0})
+                returnList.append(temp)     
+        else:
+            for row in csv_f:
+                if row['ADDRESS'] == '':
+                    row['ADDRESS']= 'no address found'
+                orary = ''
+                value = 0
+                temp= {}
+                if row[monthString.upper()].isdigit():
+                   value = (int(row[monthString.upper()]))
+                #will contain both the name and yearly totals.
+                orary = (regex.sub('',row['LOCATION'])).lower()
+                if orary == (nameString).lower():
+                    temp = dict({nameString.upper() : row['ADDRESS'],
+                                monthString+', '+ year: value})
                 returnList.append(temp)
           
         f.close()

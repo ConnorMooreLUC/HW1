@@ -23,7 +23,7 @@ def percentChange(str1, str2):
 def Main():
     print('WD: ',os.getcwd(),'\n')
     testlist = []
-    testlist = csvScope(csvfiles[0],testlist,'','')
+    testlist = csvScope(csvfiles,testlist,'','')
     print(testlist)
     
     
