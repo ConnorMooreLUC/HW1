@@ -31,13 +31,15 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
            j = 0
            for row in csv_f:
                 if row['ADDRESS'] == '':
-                    row['ADDRESS']= 'no address found'
+                    address = 'no address found'
+                else:
+                    address = row['ADDRESS'] + ' Chicago'
                 temp= {}
                 value = row[monthString.upper()]
                 if  value.isdigit():
-                    temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: value})
+                    temp = dict({row[nameString] : address, monthString+', '+ year: value})
                 else:
-                    temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: 0})
+                    temp = dict({row[nameString] : address, monthString+', '+ year: 0})
                 if i==0:
                     returnList.append(temp)
                 else:
@@ -48,7 +50,9 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
         else:
             for row in csv_f:
                 if row['ADDRESS'] == '':
-                    row['ADDRESS']= 'no address found'
+                    address = 'no address found'
+                else:
+                    address = row['ADDRESS'] + ' Chicago'
                 orary = ''
                 value = 0
                 temp= {}
@@ -57,7 +61,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 #will contain both the name and yearly totals.
                 orary = (regex.sub('',row['LOCATION'])).lower()
                 if orary == (nameString).lower():
-                    temp = dict({nameString.upper() : row['ADDRESS'],
+                    temp = dict({nameString.upper() : address,
                                 monthString+', '+ year: value})
                 if i==0:
                     returnList.append(temp)
