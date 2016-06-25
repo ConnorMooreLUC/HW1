@@ -24,8 +24,9 @@ def Main():
     #print('WD: ',wd,'\n')
     #print(csvfiles)
     testlist = []
-    testlist = csvScope(csvfiles,testlist,'','May')
-    print(testlist)
+    testlist = csvScope(csvfiles,testlist,'','')
+    for item in testlist:
+        print(item,'\n')
     
     
 Main()

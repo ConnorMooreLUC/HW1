@@ -7,7 +7,7 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 import csv
 import re
 import os
-os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1\\CSV\\Test')
+os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1\\CSV\\Circulation')
 
 def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
     #print(os.getcwd())
@@ -19,7 +19,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
     if monthString == '':
        monthString = "YTD"
     i=0
-    for i in range(len(filename)):
+    for i in range(len(filename)-1):
 #        print(i)
 #        print(filename[i])
         numpat = re.compile('[^0-9]')
@@ -41,9 +41,14 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 if i==0:
                     returnList.append(temp)
                 else:
-                    returnList[j].update(temp)
+                    name = row[nameString]
+                    keys = list(returnList[j].keys())
+                    if name in keys:
+                        returnList[j].update(temp)
+                    else:
+                        returnList.append(temp)
                 j=j+1
-                print(i,j, temp)
+#                print(i,j, temp)
         else:
             for row in csv_f:
                 if row['ADDRESS'] == '':
@@ -61,9 +66,12 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 if i==0:
                     returnList.append(temp)
                 else:
-                    returnList[j].update(temp)
+                    if row[nameString] in list(returnList[j].keys()):
+                        returnList[j].update(temp)
+                    else:
+                        returnList.append(temp)
                 j=j+1
-                print(i,j)
+                #print(i,j)
         f.close()
         i = i+1
     return returnList
