@@ -6,8 +6,11 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 """
 import csv
 import re
+import os
+os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1\\CSV\\Test')
 
 def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
+    #print(os.getcwd())
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
     monthString = regex.sub('',monthString)
@@ -15,14 +18,17 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
         nameString = "LOCATION"
     if monthString == '':
        monthString = "YTD"
+    i=0
     for i in range(len(filename)):
-        print(filename[i])
+#        print(i)
+#        print(filename[i])
         numpat = re.compile('[^0-9]')
         year = numpat.sub('',filename[i])
-        print(year)
+        #print(year)
         f = open(filename[i])
         csv_f = csv.DictReader(f)    
         if nameString == 'LOCATION':
+           j = 0
            for row in csv_f:
                 if row['ADDRESS'] == '':
                     row['ADDRESS']= 'no address found'
@@ -32,7 +38,12 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                     temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: value})
                 else:
                     temp = dict({row[nameString] : row['ADDRESS'], monthString+', '+ year: 0})
-                returnList.append(temp)     
+                if i==0:
+                    returnList.append(temp)
+                else:
+                    returnList[j].update(temp)
+                j=j+1
+                print(i,j, temp)
         else:
             for row in csv_f:
                 if row['ADDRESS'] == '':
@@ -47,21 +58,14 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 if orary == (nameString).lower():
                     temp = dict({nameString.upper() : row['ADDRESS'],
                                 monthString+', '+ year: value})
-                returnList.append(temp)
-          
+                if i==0:
+                    returnList.append(temp)
+                else:
+                    returnList[j].update(temp)
+                j=j+1
+                print(i,j)
         f.close()
+        i = i+1
     return returnList
     
     
-def listMod(listL):
-    for i  in range(len(listL)-1):
-        for k, v in listL[i].items():
-            m = list(listL[i+1].values())
-            print(k,v[0],m[0][0])
-            lista[i][k] = v[0]-m[0][0]
-            print(lista)
-                
-#lista = [{'Sam':[1]}]
-#listb = [{'Ple':[-1]}] 
-#listL =[lista, listb]      
-#listMod(listL)
