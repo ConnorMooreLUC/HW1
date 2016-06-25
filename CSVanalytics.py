@@ -42,13 +42,9 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                     returnList.append(temp)
                 else:
                     name = row[nameString]
-                    keys = list(returnList[j].keys())
-                    if name in keys:
-                        returnList[j].update(temp)
-                    else:
-                        returnList.append(temp)
+                    checker(name,returnList,temp)
                 j=j+1
-#                print(i,j, temp)
+#               print(i,j, temp)
         else:
             for row in csv_f:
                 if row['ADDRESS'] == '':
@@ -66,14 +62,25 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 if i==0:
                     returnList.append(temp)
                 else:
-                    if row[nameString] in list(returnList[j].keys()):
-                        returnList[j].update(temp)
-                    else:
-                        returnList.append(temp)
+                    name = row[nameString]
+                    checker(name,returnList,temp)
                 j=j+1
                 #print(i,j)
         f.close()
         i = i+1
     return returnList
+    
+    
+def checker(name, returnList, temp, indexer=0):
+    if indexer < len(returnList):
+        keys = list(returnList[indexer].keys())
+        if name in keys:
+            returnList[indexer].update(temp)
+            return True
+        else:
+            return checker(name,returnList,temp,(indexer+1))
+    else:
+        returnList.append(temp)
+        return False
     
     
