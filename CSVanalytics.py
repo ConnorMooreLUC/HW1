@@ -19,7 +19,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
     if monthString == '':
        monthString = "YTD"
     i=0
-    for i in range(len(filename)-1):
+    for i in range(len(filename)):
 #        print(i)
 #        print(filename[i])
         numpat = re.compile('[^0-9]')
@@ -30,27 +30,33 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
         if nameString == 'LOCATION':
            j = 0
            for row in csv_f:
-                if row['ADDRESS'] == '':
-                    address = 'no address found'
-                else:
-                    address = row['ADDRESS'] + ' Chicago'
-                temp= {}
-                value = row[monthString.upper()]
-                if  value.isdigit():
-                    temp = dict({row[nameString] : address, monthString+', '+ year: value})
-                else:
-                    temp = dict({row[nameString] : address, monthString+', '+ year: 0})
-                if i==0:
-                    returnList.append(temp)
-                else:
-                    name = row[nameString]
-                    checker(name,returnList,temp)
-                j=j+1
-#               print(i,j, temp)
+               try:
+                   if row['ADDRESS'] == '':
+                        break
+                   else:
+                        address = row['ADDRESS'] + ' Chicago'
+                   temp= {}
+                   value = row[monthString.upper()]
+                   if  value.isdigit():
+                        temp = dict({row[nameString] : address, monthString+', '+ year: value})
+                   else:
+                        temp = dict({row[nameString] : address, monthString+', '+ year: 0})
+                   if i==0:
+                        returnList.append(temp)
+                   else:
+                        name = row[nameString]
+                        checker(name,returnList,temp)
+                   j=j+1
+                   #print(i,j, temp)
+               except:
+                   
+                   print('invalid location')
+                   break
+                
         else:
             for row in csv_f:
                 if row['ADDRESS'] == '':
-                    address = 'no address found'
+                    break
                 else:
                     address = row['ADDRESS'] + ' Chicago'
                 orary = ''
@@ -86,5 +92,4 @@ def checker(name, returnList, temp, indexer=0):
     else:
         returnList.append(temp)
         return False
-    
     
