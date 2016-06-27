@@ -15,4 +15,13 @@ analytics of the libraries or return to the main menu.
 I was a little overwhelmed by the data set I picked.  However I made slow progress on completing a file reader. Next step would be to
 implement the GIS and create the console functionality.
 
+6/26-27:
+
+GIS functionality is pretty much done. However it is slow as hell. ~2 mins.  Which I will tinker with. 
+
+Much of the problems with the project so far have involved manipulating the GIS software into the format I wanted it.  Once I sorted that out. The dictionary parsing pretty much wrote itself. 
+
+Next step would be to get to my console, and analytics.  And following that would be unit testing. 
+
 -Connor
+
