@@ -7,6 +7,7 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 import csv
 import re
 import os
+
 os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1\\CSV\\Circulation')
 
 def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
@@ -38,9 +39,9 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                    temp= {}
                    value = row[monthString.upper()]
                    if  value.isdigit():
-                        temp = dict({row[nameString] : address, monthString+', '+ year: value})
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value})
                    else:
-                        temp = dict({row[nameString] : address, monthString+', '+ year: 0})
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0})
                    if i==0:
                         returnList.append(temp)
                    else:
@@ -50,7 +51,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                    #print(i,j, temp)
                except:
                    
-                   print('invalid location')
+                   #print('invalid location')
                    break
                 
         else:
@@ -67,7 +68,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 #will contain both the name and yearly totals.
                 orary = (regex.sub('',row['LOCATION'])).lower()
                 if orary == (nameString).lower():
-                    temp = dict({nameString.upper() : address,
+                    temp = dict({'Library Name ': nameString.upper(), 'Address' : address,
                                 monthString+', '+ year: value})
                 if i==0:
                     returnList.append(temp)
@@ -83,7 +84,7 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
     
 def checker(name, returnList, temp, indexer=0):
     if indexer < len(returnList):
-        keys = list(returnList[indexer].keys())
+        keys = list(returnList[indexer].values())
         if name in keys:
             returnList[indexer].update(temp)
             return True
