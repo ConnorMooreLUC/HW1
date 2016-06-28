@@ -6,7 +6,9 @@ Created on Wed Jun 22 02:08:37 2016
 """
 from geopy.geocoders import GoogleV3, Nominatim
 from shapely.geometry import Point, shape, MultiPolygon
+
 import os
+import time
 import pygeoj
 
 os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1')
@@ -29,6 +31,7 @@ def toPoint(string):
 
         
 def neighborList(filename):
+    orig = time.clock()
     testfile = pygeoj.load(filename)
     neighborList = []
     for feature in testfile:
@@ -36,36 +39,37 @@ def neighborList(filename):
         name = feature.properties['pri_neigh']
         temp = {'Name':name, 'Geometry':multipoly}
         neighborList.append(temp)
-    #print('done')
+    final = time.clock()
+    print('Checking lasted: ', final - orig)
+    print('Data >> Neighborhood\n')
     return neighborList  
     
 def addressGIS(list):
+    orig = time.clock()
     for item in list:
         point = toPoint(item.get('Address'))
         temp = {'Point': point}
         item.update(temp)
         #print(item.get('Library Name'))
+    final = time.clock()
+    print('Checking lasted: ', final - orig)    
     print('Address >> Point\n')
     return list
     
    
 def containmentZipper(neighborList, libList):
+    orig = time.clock()
     for item in libList:
         point = shape(item.get('Point'))
         for hood in neighborList:
             multipoly = shape(hood.get('Geometry'))
-            if multipoly.contains(point):
+            
+            if multipoly.bounds.__contains__(point):
                 temp = {'Neighborhood': hood.get('Name')}
                 item.update(temp)
-            
-            
+    final = time.clock()
+    print('Checking lasted: ', final - orig)
+    print('Neighborhood + Point >> Crosslisting\n')        
         
         
-    
-    
-    
-    
-    
-    
-neighborList('bounds.geojson')
 

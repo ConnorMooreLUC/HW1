@@ -39,8 +39,8 @@ def Main():
     addressGIS(testlist)
     neighborlist = neighborList('bounds.geojson')
     containmentZipper(neighborlist, testlist)
-    for item in testlist:
-        print(item,'\n')
+#    for item in testlist:
+#        print(item,'\n')
     final = time.clock()
     print('Method Calls lasted: ', final-orig)
     
