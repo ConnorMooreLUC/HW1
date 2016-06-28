@@ -23,5 +23,9 @@ Much of the problems with the project so far have involved manipulating the GIS 
 
 Next step would be to get to my console, and analytics.  And following that would be unit testing. 
 
--Connor
+6/27:  Made progress towards console ran into trouble with file reading. Then inadvertantly deleted my files. It is late, so I going to sleep.
+
+Best.
+
+Connor
 
