@@ -21,17 +21,17 @@ def toPoint(string):
     point=Point(temp.longitude,temp.latitude)
     return point
     
-#point = toPoint('1032 N Sheridan Ave Chicago')
-#
-#testfile = pygeoj.load("bounds.geojson")
-#for feature in testfile:
-#    multipoly = shape(feature.geometry)
-#    if multipoly.contains(point):
-#        print('Woo! it\'s in: ',feature.properties['pri_neigh'])
 
+def containCheck(point, neighborList):
+    temp = {}
+    for item in neighborList:
+        multipoly = shape(item.get('Geometry'))
+        if multipoly.contains(point):
+            temp = {'Neighborhood':item.get('Name')}            
+            return temp
         
 def neighborList(filename):
-    orig = time.clock()
+    os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1')
     testfile = pygeoj.load(filename)
     neighborList = []
     for feature in testfile:
@@ -39,26 +39,26 @@ def neighborList(filename):
         name = feature.properties['pri_neigh']
         temp = {'Name':name, 'Geometry':multipoly}
         neighborList.append(temp)
-    final = time.clock()
-    print('Checking lasted: ', final - orig)
-    print('Data >> Neighborhood\n')
+    
+    #print('Checking lasted: ', final - orig)
+    #print('Data >> Neighborhood\n')
     return neighborList  
     
 def addressGIS(list):
-    orig = time.clock()
+    #orig = time.clock()
     for item in list:
         point = toPoint(item.get('Address'))
         temp = {'Point': point}
         item.update(temp)
         #print(item.get('Library Name'))
-    final = time.clock()
-    print('Checking lasted: ', final - orig)    
-    print('Address >> Point\n')
+    #final = time.clock()
+    #print('Checking lasted: ', final - orig)    
+    #print('Address >> Point\n')
     return list
     
    
 def containmentZipper(neighborList, libList):
-    orig = time.clock()
+    #orig = time.clock()
     for item in libList:
         point = shape(item.get('Point'))
         for hood in neighborList:
@@ -67,9 +67,10 @@ def containmentZipper(neighborList, libList):
             if multipoly.bounds.__contains__(point):
                 temp = {'Neighborhood': hood.get('Name')}
                 item.update(temp)
-    final = time.clock()
-    print('Checking lasted: ', final - orig)
-    print('Neighborhood + Point >> Crosslisting\n')        
+    #final = time.clock()
+    #print('Checking lasted: ', final - orig)
+    #print('Neighborhood + Point >> Crosslisting\n')        
         
+
         
 

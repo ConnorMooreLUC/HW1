@@ -28,19 +28,12 @@ def percentChange(str1, str2):
 
 def Main():
     orig = time.clock()
-    #print('WD: ',wd,'\n')
-    #print(csvfiles)
     testlist = []
     testlist = csvScope(csvfiles,testlist,'','')
     os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1')
-    #for item in testlist:
-        #print(item,'\n')
-    #print(os.getcwd())
     addressGIS(testlist)
     neighborlist = neighborList('bounds.geojson')
     containmentZipper(neighborlist, testlist)
-#    for item in testlist:
-#        print(item,'\n')
     final = time.clock()
     print('Method Calls lasted: ', final-orig)
     

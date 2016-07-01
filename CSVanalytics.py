@@ -4,13 +4,14 @@ Created on Thu Jun 16 18:21:54 2016
 Pulls the location name and yearly totals for analysis and returns it in a list of dictionaries
 @author: Connor Moore
 """
+
+from geojsoncollection import toPoint, containCheck
 import csv
 import re
-import os
 
-os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1\\CSV\\Circulation')
 
-def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
+
+def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', monthString='YTD'): 
     #print(os.getcwd())
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
@@ -31,28 +32,27 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
         if nameString == 'LOCATION':
            j = 0
            for row in csv_f:
-               try:
                    if row['ADDRESS'] == '':
                         break
                    else:
                         address = row['ADDRESS'] + ' Chicago'
+                        point = toPoint(address)
+                        check = containCheck(point, neighborList)
                    temp= {}
                    value = row[monthString.upper()]
                    if  value.isdigit():
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value})
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value, 'Point': point})
+                        temp.update(check)
                    else:
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0})
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0,'Point': point})
+                        temp.update(check)
                    if i==0:
                         returnList.append(temp)
                    else:
                         name = row[nameString]
                         checker(name,returnList,temp)
                    j=j+1
-                   #print(i,j, temp)
-               except:
-                   
-                   #print('invalid location')
-                   break
+                   #print(i,j, temp)                  
                 
         else:
             for row in csv_f:
@@ -60,6 +60,8 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                     break
                 else:
                     address = row['ADDRESS'] + ' Chicago'
+                    point = toPoint(address)
+                    check = containCheck(point, neighborList)
                 orary = ''
                 value = 0
                 temp= {}
@@ -69,7 +71,8 @@ def csvScope(filename, returnList=[], nameString='LOCATION', monthString='YTD'):
                 orary = (regex.sub('',row['LOCATION'])).lower()
                 if orary == (nameString).lower():
                     temp = dict({'Library Name ': nameString.upper(), 'Address' : address,
-                                monthString+', '+ year: value})
+                                monthString+', '+ year: value, 'Point': point })
+                    temp.update(check)
                 if i==0:
                     returnList.append(temp)
                 else:
