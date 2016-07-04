@@ -6,17 +6,21 @@ import time
 import os
 import re
 
-wd = os.getcwd()
-csvfiles = [os.path.join(wd, name)
+def prelim(string):
+    os.chdir('CSV')
+    os.chdir(string)
+    print(os.listdir())
+    wd = os.getcwd()
+    filenames = [os.path.join(wd, name)
              for wd, dirs, files in os.walk(wd)
              for name in files
              if name.endswith(".csv")]
-                 
-                 
-regex = re.compile(r'\\')                 
-for i in range(len(csvfiles)):
-    temp = regex.split(csvfiles[i])
-    csvfiles[i] = temp[len(temp)-1]    
+    regex = re.compile(r'\\')
+    for i in range(len(filenames)):
+        temp = regex.split(filenames[i])
+        filenames[i] = temp[len(temp)-1] 
+               
+    return filenames
     
 def percentChange(str1, str2):
     change = (int(str2)-int(str1))*(100/int(str1))
@@ -28,9 +32,9 @@ def slimHood(slim):
     while num == 1:
         temp = ''
         if len(slim)==0:
-            temp = (input("Enter First Neighborhood Name: \nOr quit by entering the number 0\n\n:"))
+            temp = (input("Enter First Neighborhood Name: \nOr quit by entering the number 0\n\n>> "))
         else:
-            temp = (input("Enter Next Neighborhood Name: \nOr quit by entering the number 0\n\n:"))
+            temp = (input("Enter Next Neighborhood Name: \nOr quit by entering the number 0\n\n>> "))
         try:
             temp = int(temp)
             if temp == 0:
@@ -62,17 +66,13 @@ def Main():
           \n1: Display Neighborhood's Library Circulation Rates\
           \n2: Display Neighborhood's Library Visitation Rates\
           \n3: Display both Circulation and Visitation Rates\n4: Exit Console Menu, goodbye!\
-          \nenter choice here...\t:"
+          \nenter choice here...\n>> "
 #    orig = time.clock()
-#    testlist = []
-#    testlist = csvScope(csvfiles,testlist,'','')
-#    os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1')
-#    addressGIS(testlist)
-#    neighborlist = neighborList('bounds.geojson')
 #    containmentZipper(neighborlist, testlist)
 #    final = time.clock()
 #    print('Method Calls lasted: ', final-orig)
 #    slim = []
+#    liblist = []
     choice = 1
     while choice == 1:
         In = input(printMenu)
@@ -81,6 +81,8 @@ def Main():
         except:
             In = 5
         if In == 1:
+            string = 'Circulation'
+            csvfiles = prelim(string)
             print('Specify Neighboroods of Interest\n\n')
             slim = []
             slimHood(slim)
@@ -89,7 +91,20 @@ def Main():
             neighborlist = neighborList('bounds.geojson')
             print('\nBeginning matching')
             slim = consoleComp(slim,neighborlist)
-            print(slim)
+            orig = time.clock()
+            liblist = csvScope(csvfiles,slim,string)
+            final = time.clock()
+            print("Adding locations to library list, lasted: ", final - orig)
+            orig = time.clock()
+            addressGIS(liblist)            
+            final =  time.clock()
+            print("\ntime to add points: ",final - orig,'\n')
+            print("Matching to Neighborhood\n")
+            orig = time.clock()
+            containmentZipper(slim,liblist)
+            final  = time.clock()
+            print('\nCrosslisting Lasted: ', final - orig)
+            print(liblist[0])            
         elif In == 2:
             print('Specify Neighboroods of Interest\n\n')
             slim = []
@@ -99,7 +114,9 @@ def Main():
             neighborlist = neighborList('bounds.geojson')
             print('\nBeginning matching')
             slim = consoleComp(slim,neighborlist)
-            print(slim)
+            
+            
+
         elif In == 3:
             print('Specify Neighboroods of Interest\n\n')
             slim = []
@@ -109,10 +126,12 @@ def Main():
             neighborlist = neighborList('bounds.geojson')
             print('\nBeginning matching')
             slim = consoleComp(slim,neighborlist)
-            print(slim)
+
+
+
         elif In == 4:
             choice = 0
         else:
-            print('Console read error, be sure you specified one of the correct choices (1-4)\n')
+            print('\nConsole read error, be sure you specified one of the correct choices (1-4)\n')
 Main()
 #%%

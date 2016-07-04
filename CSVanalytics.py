@@ -8,11 +8,14 @@ Pulls the location name and yearly totals for analysis and returns it in a list 
 from geojsoncollection import toPoint, containCheck
 import csv
 import re
+import os
 
 
-
-def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', monthString='YTD'): 
+def csvScope(filenames, neighborList, string ,returnList=[], nameString='LOCATION', monthString='YTD'): 
     #print(os.getcwd())
+    os.chdir('CSV')
+    os.chdir(string)
+    print('\nObtaining Library Dictionaries')
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
     monthString = regex.sub('',monthString)
@@ -21,13 +24,13 @@ def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', month
     if monthString == '':
        monthString = "YTD"
     i=0
-    for i in range(len(filename)):
+    for i in range(len(filenames)-1):
 #        print(i)
-#        print(filename[i])
+#        print(filename[i]
         numpat = re.compile('[^0-9]')
-        year = numpat.sub('',filename[i])
+        year = numpat.sub('',filenames[i])
         #print(year)
-        f = open(filename[i])
+        f = open(filenames[i])
         csv_f = csv.DictReader(f)    
         if nameString == 'LOCATION':
            j = 0
@@ -35,17 +38,17 @@ def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', month
                    if row['ADDRESS'] == '':
                         break
                    else:
-                        address = row['ADDRESS'] + ' Chicago'
-                        point = toPoint(address)
-                        check = containCheck(point, neighborList)
+                        address = row['ADDRESS'] + ' Chicago, Il'
+                       # point = toPoint(address)
+          #              check = containCheck(point, neighborList)
                    temp= {}
                    value = row[monthString.upper()]
                    if  value.isdigit():
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value, 'Point': point})
-                        temp.update(check)
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value})#, 'Point':point})
+           #             temp.update(check)
                    else:
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0,'Point': point})
-                        temp.update(check)
+                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0})#, 'Point':point})
+                        #temp.update(check)
                    if i==0:
                         returnList.append(temp)
                    else:
@@ -60,8 +63,8 @@ def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', month
                     break
                 else:
                     address = row['ADDRESS'] + ' Chicago'
-                    point = toPoint(address)
-                    check = containCheck(point, neighborList)
+                    #point = toPoint(address)
+            #        check = containCheck(point, neighborList)
                 orary = ''
                 value = 0
                 temp= {}
@@ -71,13 +74,13 @@ def csvScope(filename, neighborList ,returnList=[], nameString='LOCATION', month
                 orary = (regex.sub('',row['LOCATION'])).lower()
                 if orary == (nameString).lower():
                     temp = dict({'Library Name ': nameString.upper(), 'Address' : address,
-                                monthString+', '+ year: value, 'Point': point })
-                    temp.update(check)
+                                monthString+', '+ year: value})#, 'Point':point})
+                    #temp.update(check)
                 if i==0:
                     returnList.append(temp)
                 else:
                     name = row[nameString]
-                    checker(name,returnList,temp)
+                    #checker(name,returnList,temp)
                 j=j+1
                 #print(i,j)
         f.close()

@@ -17,7 +17,7 @@ geolocator = Nominatim()
 
 
 def toPoint(string):
-    temp = geolocator.geocode(string)
+    temp = geolocator.geocode(string,timeout = 15)
     point=Point(temp.longitude,temp.latitude)
     return point
     
@@ -29,6 +29,7 @@ def containCheck(point, neighborList):
         if multipoly.contains(point):
             temp = {'Neighborhood':item.get('Name')}            
             return temp
+    
         
 def neighborList(filename):
     os.chdir('C:\\Users\\galli_000\\Desktop\\gitfolder\\HW1')
@@ -63,8 +64,7 @@ def containmentZipper(neighborList, libList):
         point = shape(item.get('Point'))
         for hood in neighborList:
             multipoly = shape(hood.get('Geometry'))
-            
-            if multipoly.bounds.__contains__(point):
+            if multipoly.contains(point):
                 temp = {'Neighborhood': hood.get('Name')}
                 item.update(temp)
     #final = time.clock()
