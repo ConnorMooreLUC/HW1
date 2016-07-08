@@ -104,7 +104,11 @@ def Main():
             containmentZipper(slim,liblist)
             final  = time.clock()
             print('\nCrosslisting Lasted: ', final - orig)
-            print(liblist[0])            
+            for item in liblist:
+                try:
+                    print(item.get("Neighborhood"))
+                except:
+                    print('None')
         elif In == 2:
             print('Specify Neighboroods of Interest\n\n')
             slim = []

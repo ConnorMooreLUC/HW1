@@ -64,9 +64,12 @@ def containmentZipper(neighborList, libList):
         point = shape(item.get('Point'))
         for hood in neighborList:
             multipoly = shape(hood.get('Geometry'))
-            if multipoly.contains(point):
+            print(type(multipoly))
+            if point.within(multipoly)==True:
                 temp = {'Neighborhood': hood.get('Name')}
                 item.update(temp)
+            else:
+                print(point, '\t',multipoly.bounds)
     #final = time.clock()
     #print('Checking lasted: ', final - orig)
     #print('Neighborhood + Point >> Crosslisting\n')        
