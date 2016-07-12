@@ -17,7 +17,7 @@ geolocator = Nominatim()
 
 
 def toPoint(string):
-    temp = geolocator.geocode(string,timeout = 15)
+    temp = geolocator.geocode(string,timeout = 25)
     point=Point(temp.longitude,temp.latitude)
     return point
     
@@ -59,17 +59,18 @@ def addressGIS(list):
     
    
 def containmentZipper(neighborList, libList):
+    returnlist = []
     #orig = time.clock()
     for item in libList:
         point = shape(item.get('Point'))
         for hood in neighborList:
             multipoly = shape(hood.get('Geometry'))
-            print(type(multipoly))
+            #print(type(multipoly))
             if point.within(multipoly)==True:
                 temp = {'Neighborhood': hood.get('Name')}
                 item.update(temp)
-            else:
-                print(point, '\t',multipoly.bounds)
+                returnlist.append(item)
+    return returnlist
     #final = time.clock()
     #print('Checking lasted: ', final - orig)
     #print('Neighborhood + Point >> Crosslisting\n')        

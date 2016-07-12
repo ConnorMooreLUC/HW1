@@ -13,8 +13,11 @@ import os
 
 def csvScope(filenames, neighborList, string ,returnList=[], nameString='LOCATION', monthString='YTD'): 
     #print(os.getcwd())
-    os.chdir('CSV')
-    os.chdir(string)
+    try:
+        os.chdir('CSV')
+        os.chdir(string)
+    except:
+        pass
     print('\nObtaining Library Dictionaries')
     regex = re.compile('[^a-zA-Z]')
     nameString = regex.sub('',nameString)
@@ -42,12 +45,15 @@ def csvScope(filenames, neighborList, string ,returnList=[], nameString='LOCATIO
                        # point = toPoint(address)
           #              check = containCheck(point, neighborList)
                    temp= {}
+                   name = row[nameString]
+                   namer = re.compile('\*')
+                   name = namer.sub('',name)
                    value = row[monthString.upper()]
                    if  value.isdigit():
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: value})#, 'Point':point})
+                        temp = dict({'Library Name':name,'Address'  : address, monthString+', '+ year: int(value)})#, 'Point':point})
            #             temp.update(check)
                    else:
-                        temp = dict({'Library Name':row[nameString],'Address'  : address, monthString+', '+ year: 0})#, 'Point':point})
+                        temp = dict({'Library Name':name,'Address'  : address, monthString+', '+ year: 0})#, 'Point':point})
                         #temp.update(check)
                    if i==0:
                         returnList.append(temp)
@@ -68,13 +74,16 @@ def csvScope(filenames, neighborList, string ,returnList=[], nameString='LOCATIO
                 orary = ''
                 value = 0
                 temp= {}
+                name = row[nameString]
+                namer = re.compile('\*')
+                name = namer.sub('',name)
                 if row[monthString.upper()].isdigit():
                    value = (int(row[monthString.upper()]))
                 #will contain both the name and yearly totals.
                 orary = (regex.sub('',row['LOCATION'])).lower()
                 if orary == (nameString).lower():
-                    temp = dict({'Library Name ': nameString.upper(), 'Address' : address,
-                                monthString+', '+ year: value})#, 'Point':point})
+                    temp = dict({'Library Name ': name, 'Address' : address,
+                                monthString+', '+ year: int(value)})#, 'Point':point})
                     #temp.update(check)
                 if i==0:
                     returnList.append(temp)
@@ -85,6 +94,8 @@ def csvScope(filenames, neighborList, string ,returnList=[], nameString='LOCATIO
                 #print(i,j)
         f.close()
         i = i+1
+    os.chdir('..')
+    os.chdir('..')
     return returnList
     
     

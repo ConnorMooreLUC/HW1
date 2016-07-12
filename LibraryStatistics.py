@@ -2,9 +2,13 @@
 from geojsoncollection import addressGIS, containmentZipper, neighborList
 from CSVanalytics import csvScope
 
+import pygal
+from pygal.style import CleanStyle
+import copy
 import time
 import os
 import re
+from collections import OrderedDict
 
 def prelim(string):
     os.chdir('CSV')
@@ -58,8 +62,23 @@ def consoleComp(stringList,b):
             i=i+1
             
     return retNeigh
-
-
+#%%
+def plotter(library, i, string):
+    d = copy.deepcopy(library)
+    del d['Point']
+    chart = pygal.Line(style=CleanStyle)
+    chart.title = d['Library Name']
+    del d['Library Name']
+    del d['Address']
+    del d['Neighborhood']
+    od = OrderedDict(sorted(d.items()))
+    #print(d)
+    chart.add(string, list(od.values()))
+    chart.x_labels = (list(od.keys()))
+    chart.render_to_file('sample' + str(i)+ '.svg')
+    del d
+    del od
+#%%
 #%%
 def Main():
     printMenu =  "\nGreetings!  Choose functionality:\
@@ -100,16 +119,23 @@ def Main():
             final =  time.clock()
             print("\ntime to add points: ",final - orig,'\n')
             print("Matching to Neighborhood\n")
+            slimlist = []
             orig = time.clock()
-            containmentZipper(slim,liblist)
+            slimlist = containmentZipper(slim,liblist)
             final  = time.clock()
             print('\nCrosslisting Lasted: ', final - orig)
-            for item in liblist:
-                try:
-                    print(item.get("Neighborhood"))
-                except:
-                    print('None')
+#            for item in slimlist:
+#                try:
+#                    print(item)
+#                except:
+#                    print('None')
+            i = 0       
+            for item in slimlist:
+                plotter(item,i,string)
+                i = i+1
         elif In == 2:
+            string = 'Visitors'
+            csvfiles = prelim(string)
             print('Specify Neighboroods of Interest\n\n')
             slim = []
             slimHood(slim)
@@ -118,7 +144,29 @@ def Main():
             neighborlist = neighborList('bounds.geojson')
             print('\nBeginning matching')
             slim = consoleComp(slim,neighborlist)
-            
+            orig = time.clock()
+            liblist = csvScope(csvfiles,slim,string)
+            final = time.clock()
+            print("Adding locations to library list, lasted: ", final - orig)
+            orig = time.clock()
+            addressGIS(liblist)            
+            final =  time.clock()
+            print("\ntime to add points: ",final - orig,'\n')
+            print("Matching to Neighborhood\n")
+            slimlist = []
+            orig = time.clock()
+            slimlist = containmentZipper(slim,liblist)
+            final  = time.clock()
+            print('\nCrosslisting Lasted: ', final - orig)
+#            for item in slimlist:
+#                try:
+#                    print(item)
+#                except:
+#                    print('None')
+            i = 0       
+            for item in slimlist:
+                plotter(item,i,string)
+                i = i+1
             
 
         elif In == 3:
